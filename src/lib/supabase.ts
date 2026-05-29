@@ -2,9 +2,10 @@ import { createClient } from '@supabase/supabase-js'
 import { createServerClient as createSSRServerClient, createBrowserClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
+// Use placeholders at build time — API routes only execute at request time
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? 'https://placeholder.supabase.co'
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? 'placeholder-anon-key'
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY ?? 'placeholder-service-key'
 
 // Admin client — bypasses RLS, server-side only
 export const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
@@ -12,7 +13,7 @@ export const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
   auth: { autoRefreshToken: false, persistSession: false },
 })
 
-// Server client for App Router Server Components
+// Server client for App Router Server Components (reads cookies)
 export async function createServerClient() {
   const cookieStore = await cookies()
   return createSSRServerClient(supabaseUrl, supabaseAnonKey, {

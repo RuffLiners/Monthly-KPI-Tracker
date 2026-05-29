@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  serverExternalPackages: ['xlsx'],
   experimental: {
+    serverComponentsExternalPackages: ['xlsx'],
     serverActions: {
       bodySizeLimit: '50mb',
     },
